@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Clear Mind - Speech to Text</h2>
+
+    <div>
+        <h3>Record Audio</h3>
+        <button id="recordBtn" style="font-size: 20px; padding: 10px;">Start Recording</button>
+        <button id="stopBtn" style="font-size: 20px; padding: 10px;" disabled>Stop Recording</button>
+    </div>
+
+    <div>
+        <h3>Transcription</h3>
+        <textarea id="transcriptionText" rows="10" cols="50" placeholder="Your transcription will appear here" style="font-size: 18px; width: 100%; height: 200px;"></textarea>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        // Start recording audio
+        document.getElementById('recordBtn').onclick = async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'audio.wav');
+
+                // Send audio to backend for transcription
+                try {
+                    const response = await fetch('/transcribe', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        document.getElementById('transcriptionText').value = data.transcription;
+                    } else {
+                        document.getElementById('transcriptionText').value = `Error: ${data.error}`;
+                    }
+
+                } catch (error) {
+                    document.getElementById('transcriptionText').value = `Error: ${error.message}`;
+                }
+
+                audioChunks = [];
+            };
+
+            mediaRecorder.start();
+            document.getElementById('recordBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+        };
+
+        // Stop recording
+        document.getElementById('stopBtn').onclick = () => {
+            mediaRecorder.stop();
+            document.getElementById('recordBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+        };
+    </script>
+{% endblock %}

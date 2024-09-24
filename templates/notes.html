@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+    <!-- Calendar Navigation -->
+    <div>
+        <form action="/notes" method="get">
+            <input type="hidden" name="year" value="{{ current_year }}">
+            <input type="hidden" name="month" value="{{ current_month }}">
+            <button type="submit" name="action" value="prev">Previous Month</button>
+            <button type="submit" name="action" value="next">Next Month</button>
+        </form>
+    </div>
+
+    <!-- Display Month and Year -->
+    <div>
+        <h2>{{ current_month_name }} {{ current_year }}</h2>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar">
+        {{ calendar | safe }}
+    </div>
+
+    <!-- Notes Content -->
+    {% if selected_day %}
+        <h3>Notes for {{ selected_day }}</h3>
+        <div>
+            {% if notes_contents %}
+                {% for content in notes_contents %}
+                    <pre>{{ content }}</pre>
+                {% endfor %}
+            {% else %}
+                <p>No notes available for this day.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

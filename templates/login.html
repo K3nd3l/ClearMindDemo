@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .login-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: rgb(239, 33, 33);
+            text-align: center;
+        }
+        .create-account {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .create-account a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .create-account a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent the form from submitting in the usual way
+            var form = event.target;
+            var formData = new FormData(form);
+            
+            // Process form data here (e.g., send it to the server)
+            fetch('/login', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = "/home"; // Redirect to /home on successful login
+                } else {
+                    document.getElementById('error-message').innerText = 'Login failed: Invalid username or password'; // Show feedback on failure
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                document.getElementById('error-message').innerText = 'An error occurred. Please try again later.'; // Show error on failure
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form onsubmit="handleFormSubmit(event)">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+            <div id="error-message" class="error-message"></div> <!-- Error message container -->
+        </form>
+
+        <!-- Create Account Link -->
+        <div class="create-account">
+            <p>Don't have an account? <a href="/register">Create Account</a></p>
+        </div>
+    </div>
+</body>
+</html>

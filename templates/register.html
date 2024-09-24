@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .register-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .register-container input[type="text"],
+        .register-container input[type="password"],
+        .register-container input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .register-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .register-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: rgb(239, 33, 33);
+            text-align: center;
+        }
+        .success-message {
+            color: green;
+            text-align: center;
+        }
+    </style>
+    <script>
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent the form from submitting in the usual way
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Hash the password before sending
+            const password = formData.get('password');
+            const hashedPassword = await hashPassword(password);
+            formData.set('password', hashedPassword);
+
+            // Send form data to the server
+            fetch('/register', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.success) {
+                    window.location.href = '/'; // Redirect to login page on success
+                } else {
+                    document.getElementById('error-message').innerText = data.message; // Show error message
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                document.getElementById('error-message').innerText = 'An error occurred. Please try again later.';
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Create Account</h2>
+        <form onsubmit="handleFormSubmit(event)">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Create Account">
+            <div id="error-message" class="error-message"></div>
+        </form>
+    </div>
+</body>
+</html>

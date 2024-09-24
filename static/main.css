@@ -1,0 +1,185 @@
+/* General Styles */
+body {
+  background: #fafafa;
+  color: #333333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3270a3;
+  padding: 0.5rem 1rem;
+  color: #cbd5db;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 60px;
+}
+
+.navbar-brand {
+  color: #cbd5db;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+.navbar-brand:hover {
+  color: #ffffff;
+}
+
+.navbar-toggler {
+  background: none;
+  border: none;
+  color: #cbd5db;
+  font-size: 1.25rem;
+}
+
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 0 0.5rem;
+}
+
+.nav-link {
+  color: #cbd5db;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  background-color: #204d74;
+}
+
+.nav-link.active {
+  font-weight: 500;
+  background-color: #204d74;
+  color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-toggler {
+    display: block;
+  }
+  .collapse {
+    display: none;
+  }
+  .collapse.show {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Main Content Styles */
+main {
+  margin-top: 60px;
+  padding: 20px;
+}
+
+/* Calendar Styles */
+.calendar {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+}
+
+.calendar table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar th, .calendar td {
+  padding: 5px;
+  text-align: center;
+}
+
+.calendar th {
+  background-color: #f0f0f0;
+}
+
+.calendar td {
+  border: 1px solid #dddddd;
+}
+
+.has-recording {
+  background-color: #FFD700;
+  color: black;
+}
+
+.highlight {
+  background-color: rgb(101, 172, 205);
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #6b5b95;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* Dropdown Content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Button Styles */
+.btn {
+  border: 2px solid #ddd;
+  background-color: #6b5b95;
+  color: #ddd;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.success {
+  border-color: #4CAF50;
+  color: green;
+}
+
+.success:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Show the dropdown on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #6b5b95;
+}
